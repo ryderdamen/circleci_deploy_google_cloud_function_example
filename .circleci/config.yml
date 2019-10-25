@@ -8,7 +8,6 @@ jobs:
       - run:
           name: Authorize GCloud Command Line Tool
           command: |
-            echo $GCLOUD_SERVICE_KEY | base64 --decode
             echo $GCLOUD_SERVICE_KEY | base64 --decode | gcloud auth activate-service-account --key-file=-
       - run:
           name: Deploy To Google Cloud Functions
@@ -18,7 +17,7 @@ jobs:
             ENTRYPOINT=main
             GCP_PROJECT=circleci-gcf-deployment
             # Deploy command
-            gcloud_function_deploy $FUNCTION_NAME \
+            gcloud functions deploy $FUNCTION_NAME \
               --entry-point $ENTRYPOINT \
               --runtime python37 \
               --trigger-http \

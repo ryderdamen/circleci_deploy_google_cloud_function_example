@@ -49,6 +49,7 @@ If all went successfully you should see a screen looking something like this. Yo
 ![](img/sa_9.png)
 
 
+
 ## Create the CircleCI Project and Add Environment Variables
 
 Now that we've got our private key, we need to create a CircleCI project. We're going to assume this project is already on GitHub in the same format that it exists now (with a `src` directory and a `.circleci` directory).

@@ -1,0 +1,31 @@
+version: 2
+jobs:
+  deploy:
+    docker:
+      - image: google/cloud-sdk
+    steps:
+      - checkout
+      - run:
+          name: Authorize GCloud Command Line Tool
+          command: |
+            echo $GCLOUD_SERVICE_KEY | base64 --decode | gcloud auth activate-service-account --key-file=-
+      - run:
+          name: Deploy To Google Cloud Functions
+          command: |
+            # Variables
+            FUNCTION_NAME=circleci_deployment_example
+            ENTRYPOINT=main
+            GCP_PROJECT=circleci-gcf-deployment
+            # Deploy command
+            gcloud_function_deploy $FUNCTION_NAME \
+              --entry-point $ENTRYPOINT \
+              --runtime python37 \
+              --trigger-http \
+              --source ./src/ \
+              --project $GCP_PROJECT
+workflows:
+    deploy:
+      filters:
+        branches:
+          only:
+            - master
